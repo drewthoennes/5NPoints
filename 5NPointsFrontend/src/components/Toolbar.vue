@@ -26,7 +26,7 @@ h1, h2 {
 }
 .toolbar {
   margin: 0px;
-  padding: 10px;
+  padding: 15px;
   background-color: #50e09a;
 }
 ul {
@@ -36,7 +36,6 @@ ul {
 li {
   font-size: 20px;
   float: left;
-  padding: 5px;
 }
 .toolbar a {
   font-size: 20px;
