@@ -1,4 +1,6 @@
-const express = require('express');
+const express = require('express'),
+  config = require('../config'),
+  User = require('../models/User')
 
 var router = express.Router();
 
@@ -34,6 +36,20 @@ router.get('/api/rewards', (req, res) => {
       reward: 'Zach\'s Snapchat'
     }
   ]);
+})
+
+router.get('/api/users', (req, res) => {
+  User.find({}, (err, users) => {
+    if(err) {
+      res.send('Error querying for users');
+    }
+    else if(!users.length) {
+      res.send('No users found');
+    }
+    else {
+      res.json(users);
+    }
+  })
 })
 
 module.exports = router;
