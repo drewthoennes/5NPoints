@@ -1,7 +1,7 @@
 <template>
   <div class="admin h-100">
     <div class="col h-100">
-      <Toolbar class="row w-100"/>
+      <AdminToolbar class="row w-100"/>
       <div class="body">
         <h1>Points</h1>
         <table class="table table-bordered">
@@ -14,7 +14,7 @@
           <tbody>
             <tr v-for="user in users">
               <td>{{user.name}}</td>
-              <td><p v-on:click="decrememtPoints">-</p><p> {{user.points}} </p><p v-on:click="incrementPoints">+</p></td>
+              <td><p v-on:click="decrememtPoints(user._id)">-</p><p> {{user.points}} </p><p v-on:click="incrementPoints(user._id)">+</p></td>
             </tr>
           </tbody>
         </table>
@@ -25,9 +25,13 @@
 
 <script>
 import router from '@/router'
+import AdminToolbar from '@/components/AdminToolbar'
 
 export default {
   name: 'Admin',
+  components: {
+    AdminToolbar
+  },
   data () {
     return {
       users: []
@@ -47,11 +51,29 @@ export default {
         this.users = res.body;
       });
     },
-    incrementPoints: function() {
-      alert('Increment');
+    incrementPoints: function(id) {
+      this.$http.post('http://localhost:3000/increment', {
+        _id: id
+      }).then(res => { // Change localhost
+        if(!res.body.success) {
+          alert(res.body.message);
+        }
+        else {
+          this.getUsers();
+        }
+      });
     },
-    decrememtPoints: function() {
-      alert('Decrement');
+    decrememtPoints: function(id) {
+      this.$http.post('http://localhost:3000/decrement', {
+        _id: id
+      }).then(res => { // Change localhost
+        if(!res.body.success) {
+          alert(res.body.message);
+        }
+        else {
+          this.getUsers();
+        }
+      });
     }
   },
   mounted() {

@@ -2,7 +2,7 @@
   <div class="login container-fluid">
     <div id="LoginForm" class="col">
       <div id="LoginFormHeader" class="col">
-        <router-link to="/points">View points here</router-link>
+        <router-link to="/points">Not an admin? View points here</router-link>
       </div>
       <div id="LoginFormBody">
         <h1>Log in</h1>
@@ -18,6 +18,7 @@
 
 <script>
 import router from '@/router';
+
 export default {
   name: 'Login',
   methods: {
@@ -32,7 +33,7 @@ export default {
       }).then(res => {
         if(res.body.success === true) {
           alert(res.body.message);
-          // Move to admin page
+          router.push({name: 'Admin'});
         }
         else {
           alert(res.body.message);
@@ -52,7 +53,6 @@ h1, h2 {
 .login {
   padding-top: 50px;
   padding-bottom: 50px;
-  background-color: grey;
 }
 input {
   height: 50px;
