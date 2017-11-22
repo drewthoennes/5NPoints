@@ -1,17 +1,17 @@
 <template>
   <div class="login container-fluid">
-      <div id="LoginForm" class="col">
-        <div id="LoginFormHeader" class="col">
-          <router-link to="/points">View points here</router-link>
-        </div>
-        <div id="LoginFormBody">
-          <h1>Log in</h1>
-          <form v-on:submit="loginUser">
-            <input id="Username" ref="username" placeholder="Username" class="form-control" type="text">
-            <input id="Password" ref="password" placeholder="Password" class="form-control" type="password">
-            <input id="Submit" placeholder="Create account" class="form-control" type="submit">
-          </form>
-        </div>
+    <div id="LoginForm" class="col">
+      <div id="LoginFormHeader" class="col">
+        <router-link to="/points">View points here</router-link>
+      </div>
+      <div id="LoginFormBody">
+        <h1>Log in</h1>
+        <form v-on:submit="loginUser">
+          <input id="Username" ref="username" placeholder="Username" class="form-control" type="text">
+          <input id="Password" ref="password" placeholder="Password" class="form-control" type="password">
+          <input id="Submit" placeholder="Create account" class="form-control" type="submit">
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -21,6 +21,24 @@ import router from '@/router';
 export default {
   name: 'Login',
   methods: {
+    loginUser: function(event) {
+      event.preventDefault();
+      if(!this.$refs.username.value || !this.$refs.password.value) {
+        alert("Please complete all fields");
+      }
+      this.$http.post('http://localhost:3000/login', {
+        username: this.$refs.username.value,
+        password: this.$refs.password.value
+      }).then(res => {
+        if(res.body.success === true) {
+          alert(res.body.message);
+          // Move to admin page
+        }
+        else {
+          alert(res.body.message);
+        }
+      });
+    }
   }
 }
 </script>
