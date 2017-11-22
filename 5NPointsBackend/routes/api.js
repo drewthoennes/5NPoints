@@ -1,6 +1,8 @@
 const express = require('express'),
   config = require('../config'),
-  User = require('../models/User')
+  User = require('../models/User'),
+  Point = require('../models/Point'),
+  Reward = require('../models/Reward')
 
 var router = express.Router();
 
@@ -9,33 +11,43 @@ router.get('/api', (req, res) => {
 })
 
 router.get('/api/points', (req, res) => {
-  res.send([
-    {
-      name: 'Drew Thoennes',
-      points: 10
-    },
-    {
-      name: 'Aashir Aumir',
-      points: 13
-    },
-    {
-      name: 'Elnard Utiushev',
-      points: 19
+  Point.find({}, (err, points) => {
+    if(err) {
+      res.send({
+        success: false,
+        message: 'Couldn\'t retrieve points'
+      });
     }
-  ]);
+    else if(!points.length) {
+      res.send({
+        success: false,
+        message: 'Couldn\'t retrieve points'
+      });
+    }
+    else {
+      res.json(points);
+    }
+  });
 })
 
 router.get('/api/rewards', (req, res) => {
-  res.send([
-    {
-      points: 1,
-      reward: 'Get a bedtime story from Zach'
-    },
-    {
-      points: 60,
-      reward: 'Zach\'s Snapchat'
+  Reward.find({}, (err, rewards) => {
+    if(err) {
+      res.send({
+        success: false,
+        message: 'Couldn\'t retrieve rewards'
+      });
     }
-  ]);
+    else if(!rewards.length) {
+      res.send({
+        success: false,
+        message: 'Couldn\'t retrieve rewards'
+      });
+    }
+    else {
+      res.json(rewards);
+    }
+  });
 })
 
 router.get('/api/users', (req, res) => {
