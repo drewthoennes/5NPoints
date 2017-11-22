@@ -25,6 +25,7 @@
 
 <script>
 import Toolbar from '@/components/Toolbar'
+
 export default {
   name: 'Rewards',
   components: {
@@ -32,13 +33,18 @@ export default {
   },
   data () {
     return {
-      rewards: [
-        {
-          points: 1,
-          reward: 'Get a bedtime store from Zach'
-        }
-      ]
+      rewards: []
     }
+  },
+  methods: {
+    getRewards: function() {
+      this.$http.get('http://localhost:3000/api/rewards').then(res => { // Change localhost
+        this.rewards = res.body;
+      });
+    }
+  },
+  mounted() {
+    this.getRewards();
   }
 }
 </script>

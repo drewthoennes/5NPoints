@@ -33,26 +33,18 @@ export default {
   },
   data () {
     return {
-      // Test data that should be deleted
-      users: [
-        {
-          name: 'Drew Thoennes',
-          points: 10
-        },
-        {
-          name: 'Aashir Aumir',
-          points: 13
-        }
-      ]
+      users: []
     }
   },
   methods: {
     getUsers: function() {
-      // Query for users
+      this.$http.get('http://localhost:3000/api/points').then(res => { // Change localhost
+        this.users = res.body;
+      });
     }
   },
   mounted() {
-    getUsers();
+    this.getUsers();
   }
 }
 </script>
