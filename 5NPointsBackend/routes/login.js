@@ -1,5 +1,6 @@
 const express = require('express'),
-  User = require('../models/User')
+  User = require('../models/User'),
+  session = require('express-session')
 
 var router = express.Router();
 
@@ -28,10 +29,23 @@ router.post('/login', (req, res) => {
           }
           else {
             // Create session and token
-            res.send({
-              success: true,
-              message: 'User logged in'
-            })
+            //console.log(req.session);
+            req.session.token = 'THISISMYTOKEN';
+            //console.log(req.session);
+            req.session.save(function(err) {
+              if(err) {
+                res.send({
+                  success: false,
+                  message: 'Error logging in: ' + err
+                })
+              }
+              else {
+                res.send({
+                  success: true,
+                  message: 'User logged in'
+                })
+              }
+            });
           }
         })
       }

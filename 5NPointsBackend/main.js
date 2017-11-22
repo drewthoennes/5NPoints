@@ -5,7 +5,8 @@ var express = require('express'),
 	cors = require('cors'),
 	http = require('http').Server(app)
 	path = require('path'),
-	mongoose = require('mongoose');
+	mongoose = require('mongoose'),
+	session = require('express-session');
 
 var config = require('./config'),
 	port = config.port,
@@ -25,6 +26,24 @@ var api_route = require('./routes/api'),
 	login_route = require('./routes/login'),
 	admin_route = require('./routes/admin')
 
+app.use(session({
+	secret: 'purduecs',
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		maxAge: 36000000,
+		secure: false, // Should be true on production
+		httpOnly: false
+	},
+	// store: sessionstore.createSessionStore({ // Need to install sessionstore to use this
+	// 	type: 'mongodb',
+	// 	host: 'localhost',
+	// 	port: 27017,
+	// 	dbName: '5npoints',
+	// 	collectionName: 'sessions',
+	// 	timeout: 10000
+	// })
+}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
