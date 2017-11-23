@@ -36,7 +36,7 @@ export default {
           router.push({name: 'Admin'});
         }
         else {
-          alert(res.body.message);
+          alert('Error: ' + res.body.message);
         }
       });
     }
