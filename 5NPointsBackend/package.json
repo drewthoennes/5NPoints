@@ -5,12 +5,16 @@
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "connect-history-api-fallback": "^1.5.0",
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "http": "0.0.0",
     "mongoose": "^4.13.4",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "sessionstore": "^1.2.18"
   },
   "devDependencies": {},
   "scripts": {

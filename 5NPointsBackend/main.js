@@ -4,9 +4,11 @@ var express = require('express'),
 	morgan = require('morgan'),
 	cors = require('cors'),
 	http = require('http').Server(app)
-	path = require('path'),
+	path = require('path')
+	// history = require('connect-history-api-fallback'),
 	mongoose = require('mongoose'),
-	session = require('express-session');
+	session = require('express-session'),
+	cookieParser = require('cookie-parser');
 
 var config = require('./config'),
 	port = config.port,
@@ -26,6 +28,11 @@ var api_route = require('./routes/api'),
 	login_route = require('./routes/login'),
 	admin_route = require('./routes/admin')
 
+app.use(cookieSession({
+	name: 'session', // This is the default
+	secret: 'purduecs', // Needs to be the same as express session secret
+	maxAge: 36000000
+}));
 app.use(session({
 	secret: 'purduecs',
 	resave: false,
@@ -34,20 +41,13 @@ app.use(session({
 		maxAge: 36000000,
 		secure: false, // Should be true on production
 		httpOnly: false
-	},
-	// store: sessionstore.createSessionStore({ // Need to install sessionstore to use this
-	// 	type: 'mongodb',
-	// 	host: 'localhost',
-	// 	port: 27017,
-	// 	dbName: '5npoints',
-	// 	collectionName: 'sessions',
-	// 	timeout: 10000
-	// })
+	}
 }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cors());
+// app.use(history());
 app.use('/', api_route);
 app.use('/', login_route);
 app.use('/', admin_route);

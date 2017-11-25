@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "npm run dev",
+    "start": "node main.js",
     "build": "node build/build.js"
   },
   "dependencies": {
@@ -48,7 +48,7 @@
     "webpack-merge": "^4.1.0"
   },
   "engines": {
-    "node": ">= 4.0.0",
+    "node": "6.5.0",
     "npm": ">= 3.0.0"
   },
   "browserslist": [

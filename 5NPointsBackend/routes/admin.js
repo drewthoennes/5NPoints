@@ -1,17 +1,26 @@
 const express = require('express'),
   User = require('../models/User'),
   Point = require('../models/Point')
-  session = require('express-session'),
+  //session = require('express-session'),
+  cookieSession = require('cookie-session'),
   mongoose = require('mongoose');
 
 var router = express.Router();
 
 router.post('/admin', (req, res) => {
-  //console.log(req.session);
-  res.send({
-    success: true,
-    message: 'User has privileges'
-  })
+  console.log(req.session);
+  if(0 == 1) { // !req.session.token
+    res.send({
+      success: false,
+      message: 'Token not found'
+    })
+  }
+  else if(true) { // Check that token exists in database
+    res.send({
+      success: true,
+      message: 'User has privilege'
+    })
+  }
 })
 
 router.post('/increment', (req, res) => {
