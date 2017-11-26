@@ -18,6 +18,7 @@
 
 <script>
 import router from '@/router';
+import config from '@/assets/config';
 
 export default {
   name: 'Login',
@@ -27,7 +28,7 @@ export default {
       if(!this.$refs.username.value || !this.$refs.password.value) {
         alert("Please complete all fields");
       }
-      this.$http.post('http://localhost:3000/login', {
+      this.$http.post(config.backend + '/login', {
         username: this.$refs.username.value,
         password: this.$refs.password.value
       }).then(res => {

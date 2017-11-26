@@ -26,6 +26,7 @@
 <script>
 import router from '@/router'
 import AdminToolbar from '@/components/AdminToolbar'
+import config from '@/assets/config'
 
 export default {
   name: 'Admin',
@@ -39,7 +40,7 @@ export default {
   },
   methods: {
     checkPrivileges: function() {
-      this.$http.post('http://localhost:3000/admin', {}).then(res => {
+      this.$http.post(config.backend + '/admin', {}).then(res => {
         if(!res.body.success) {
           alert(res.body.message);
           router.push({name: 'Login'});
@@ -47,12 +48,12 @@ export default {
       });
     },
     getUsers: function() {
-      this.$http.get('http://localhost:3000/api/points').then(res => { // Change localhost
+      this.$http.get(config.backend + '/api/points').then(res => { // Change localhost
         this.users = res.body;
       });
     },
     incrementPoints: function(id) {
-      this.$http.post('http://localhost:3000/increment', {
+      this.$http.post(config.backend + '/increment', {
         _id: id
       }).then(res => { // Change localhost
         if(!res.body.success) {
@@ -64,7 +65,7 @@ export default {
       });
     },
     decrememtPoints: function(id) {
-      this.$http.post('http://localhost:3000/decrement', {
+      this.$http.post(config.backend + '/decrement', {
         _id: id
       }).then(res => { // Change localhost
         if(!res.body.success) {

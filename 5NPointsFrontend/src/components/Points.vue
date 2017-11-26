@@ -25,6 +25,7 @@
 
 <script>
 import Toolbar from '@/components/Toolbar'
+import config from '@/assets/config'
 
 export default {
   name: 'Points',
@@ -38,7 +39,7 @@ export default {
   },
   methods: {
     getUsers: function() {
-      this.$http.get('http://localhost:3000/api/points').then(res => { // Change localhost
+      this.$http.get(config.backend + '/api/points').then(res => { // Change localhost
         this.users = res.body;
       });
     }

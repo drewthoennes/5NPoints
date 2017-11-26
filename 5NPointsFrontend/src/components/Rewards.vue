@@ -25,6 +25,7 @@
 
 <script>
 import Toolbar from '@/components/Toolbar'
+import config from '@/assets/config'
 
 export default {
   name: 'Rewards',
@@ -38,7 +39,7 @@ export default {
   },
   methods: {
     getRewards: function() {
-      this.$http.get('http://localhost:3000/api/rewards').then(res => { // Change localhost
+      this.$http.get(config.backend + '/api/rewards').then(res => { // Change localhost
         this.rewards = res.body;
       });
     }
