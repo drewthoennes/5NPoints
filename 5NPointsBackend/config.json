@@ -1,4 +1,4 @@
 {
-	"port": 8080,
+	"port": 3000,
 	"database": "localhost:27017/5npoints"
 }

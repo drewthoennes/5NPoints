@@ -6,22 +6,26 @@ const express = require('express'),
 
 var router = express.Router();
 
+router.get('/', (req, res) => {
+  res.send('5NPoints Backend');
+})
+
 router.get('/api', (req, res) => {
   res.send('5NPoints API');
 })
 
 router.get('/api/points', (req, res) => {
-  Point.find({}, (err, points) => {
+  Point.find({}).sort({name: 1}).exec((err, points) => {
     if(err) {
       res.send({
         success: false,
-        message: 'Couldn\'t retrieve points'
+        message: 'Couldn\'t retrieve points: ' + err
       });
     }
     else if(!points.length) {
       res.send({
         success: false,
-        message: 'Couldn\'t retrieve points'
+        message: 'No points found'
       });
     }
     else {
@@ -31,17 +35,17 @@ router.get('/api/points', (req, res) => {
 })
 
 router.get('/api/rewards', (req, res) => {
-  Reward.find({}, (err, rewards) => {
+  Reward.find({}).sort({points: 1}).exec((err, rewards) => {
     if(err) {
       res.send({
         success: false,
-        message: 'Couldn\'t retrieve rewards'
+        message: 'Couldn\'t retrieve rewards: err'
       });
     }
     else if(!rewards.length) {
       res.send({
         success: false,
-        message: 'Couldn\'t retrieve rewards'
+        message: 'No rewards found'
       });
     }
     else {
@@ -53,7 +57,7 @@ router.get('/api/rewards', (req, res) => {
 router.get('/api/users', (req, res) => {
   User.find({}, (err, users) => {
     if(err) {
-      res.send('Error querying for users');
+      res.send('Couldn\'t retrieve users: ' + err);
     }
     else if(!users.length) {
       res.send('No users found');
