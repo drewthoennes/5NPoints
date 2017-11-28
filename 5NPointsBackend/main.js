@@ -37,7 +37,7 @@ app.use(session({
 	resave: true,
 	saveUninitialized: false,
 	store: new MongoStore({
-		url: config.database,
+		url: database,
 		collection: 'sessions',
 		ttl: 3 * 60 * 60
 	}),
