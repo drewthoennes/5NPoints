@@ -1,13 +1,14 @@
 var express = require('express'),
 	app = express(),
+	session = require('express-session'),
 	bodyParser = require('body-parser'),
 	morgan = require('morgan'),
 	cors = require('cors'),
 	http = require('http').Server(app)
 	path = require('path'),
 	mongoose = require('mongoose'),
-	session = require('express-session'),
-	cookieParser = require('cookie-parser');
+	MongoStore = require('connect-mongo')(session);
+	// cookieParser = require('cookie-parser');
 
 var config = require('./config'),
 	port = process.env.PORT || config.port,
@@ -27,15 +28,19 @@ var api_route = require('./routes/api'),
 	login_route = require('./routes/login'),
 	admin_route = require('./routes/admin')
 
-app.use(cookieSession({
-	name: 'session', // This is the default
-	secret: 'purduecs', // Needs to be the same as express session secret
-	maxAge: 36000000
-}));
+// app.use(cookieParser({
+// 	secret: 'purduecs', // Needs to be the same as express session secret
+// 	maxAge: null
+// }));
 app.use(session({
 	secret: 'purduecs',
-	resave: false,
-	saveUninitialized: true,
+	resave: true,
+	saveUninitialized: false,
+	store: new MongoStore({
+		url: config.database,
+		collection: 'sessions',
+		ttl: 3 * 60 * 60
+	}),
 	cookie: {
 		maxAge: 36000000,
 		secure: true, // Turned to true, check functionality

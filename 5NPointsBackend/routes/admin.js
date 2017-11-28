@@ -1,14 +1,14 @@
 const express = require('express'),
   User = require('../models/User'),
   Point = require('../models/Point')
-  //session = require('express-session'),
-  cookieSession = require('cookie-session'),
+  session = require('express-session'),
+  //cookieSession = require('cookie-session'),
   mongoose = require('mongoose');
 
 var router = express.Router();
 
 router.post('/admin', (req, res) => {
-  console.log(req.session);
+  console.log(req.session.token);
   if(0 == 1) { // !req.session.token
     res.send({
       success: false,
