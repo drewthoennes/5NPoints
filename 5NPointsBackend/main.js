@@ -8,7 +8,6 @@ var express = require('express'),
 	path = require('path'),
 	mongoose = require('mongoose'),
 	MongoStore = require('connect-mongo')(session);
-	// cookieParser = require('cookie-parser');
 
 var config = require('./config'),
 	port = process.env.PORT || config.port,
@@ -28,10 +27,6 @@ var api_route = require('./routes/api'),
 	login_route = require('./routes/login'),
 	admin_route = require('./routes/admin')
 
-// app.use(cookieParser({
-// 	secret: 'purduecs', // Needs to be the same as express session secret
-// 	maxAge: null
-// }));
 app.use(session({
 	secret: 'purduecs',
 	resave: true,
@@ -43,14 +38,17 @@ app.use(session({
 	}),
 	cookie: {
 		maxAge: 36000000,
-		secure: true, // Turned to true, check functionality
+		secure: false,
 		httpOnly: false
 	}
 }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-app.use(cors());
+app.use(cors({
+	origin: 'http://localhost:8080',
+	credentials: true
+}));
 app.use('/', api_route);
 app.use('/', login_route);
 app.use('/', admin_route);
