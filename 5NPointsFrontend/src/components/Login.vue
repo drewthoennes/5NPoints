@@ -1,16 +1,20 @@
 <template>
-  <div class="login container-fluid">
-    <div id="LoginForm" class="col">
-      <div id="LoginFormHeader" class="col">
-        <router-link to="/points">Not an admin? View points here</router-link>
-      </div>
-      <div id="LoginFormBody">
-        <h1>Log in</h1>
-        <form v-on:submit="loginUser">
-          <input id="Username" ref="username" placeholder="Username" class="form-control" type="text">
-          <input id="Password" ref="password" placeholder="Password" class="form-control" type="password">
-          <input id="Submit" placeholder="Create account" class="form-control" type="submit">
-        </form>
+  <div class="login h-100">
+    <div class="col h-100">
+      <div class="login container-fluid">
+        <div id="LoginForm" class="col">
+          <div id="LoginFormHeader" class="col">
+            <router-link to="/points">Not an admin? View points here.</router-link>
+          </div>
+          <div id="LoginFormBody">
+            <h1>Log in</h1>
+            <form v-on:submit="loginUser">
+              <input id="Username" ref="username" placeholder="Username" class="form-control" type="text">
+              <input id="Password" ref="password" placeholder="Password" class="form-control" type="password">
+              <input id="Submit" placeholder="Create account" class="form-control" type="submit">
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -19,19 +23,24 @@
 <script>
 import router from '@/router';
 import config from '@/assets/config';
+import Toolbar from '@/components/Toolbar'
 
 export default {
   name: 'Login',
+  components: {
+    Toolbar
+  },
   methods: {
     loginUser: function(event) {
       event.preventDefault();
       if(!this.$refs.username.value || !this.$refs.password.value) {
         alert("Please complete all fields");
       }
+      this.$http.options.emulateJSON = true
       this.$http.post(config.backend + '/login', {
         username: this.$refs.username.value,
         password: this.$refs.password.value
-      }).then(res => {
+      }, {credentials: true}).then(res => {
         if(res.body.success === true) {
           alert(res.body.message);
           router.push({name: 'Admin'});
