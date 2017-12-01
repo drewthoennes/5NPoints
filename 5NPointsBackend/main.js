@@ -8,6 +8,7 @@ var express = require('express'),
 	path = require('path'),
 	mongoose = require('mongoose'),
 	MongoStore = require('connect-mongo')(session);
+	// cookieParser = require('cookie-parser');
 
 var config = require('./config'),
 	port = process.env.PORT || config.port,
@@ -25,8 +26,10 @@ mongoose.connect(database, function(err, res) {
 
 var api_route = require('./routes/api'),
 	login_route = require('./routes/login'),
+	logout_route = require('./routes/logout'),
 	admin_route = require('./routes/admin')
 
+//app.use(cookieParser());
 app.use(session({
 	secret: 'purduecs',
 	resave: true,
@@ -46,11 +49,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cors({
-	origin: 'http://localhost:8080',
-	credentials: true
+	origin: 'http://localhost:8080', //https://fivenpoints.herokuapp.com/
+	credentials: true,
+	methods: ['GET', 'PUT', 'POST', 'OPTIONS'],
+	allowedHeaders: ['Content-Type', '*']
 }));
 app.use('/', api_route);
 app.use('/', login_route);
+app.use('/', logout_route);
 app.use('/', admin_route);
 
 http.listen(port, () => {
