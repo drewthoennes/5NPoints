@@ -1,68 +1,136 @@
 const express = require('express'),
   User = require('../models/User'),
   Point = require('../models/Point')
-  session = require('express-session'),
-  //cookieSession = require('cookie-session'),
-  mongoose = require('mongoose');
+  mongoose = require('mongoose'),
+  jwt = require('jsonwebtoken');
 
 var router = express.Router();
 
 router.post('/admin', (req, res) => {
-  console.log(req.session.token);
-  if(0 == 1) { // !req.session.token
-    res.send({
-      success: false,
-      message: 'Token not found'
-    })
-  }
-  else if(true) { // Check that token exists in database
-    res.send({
-      success: true,
-      message: 'User has privilege'
-    })
-  }
+  User.findById(req.body.id, function(err, user) {
+    if(err) { // Can't find user
+      res.send({
+        success: false,
+        message: 'Error searching for user: ' + err
+      });
+    }
+    else { // Check token
+      jwt.verify(req.body.token, 'purduecs', function(err, decoded) {
+        if(err) { // Error decoding
+          res.send({
+            success: false,
+            message: 'Error decoding token: ' + err
+          });
+        }
+        else {
+          if(decoded.data.trim() !== user.tokenData.trim()) { // Tokens don't match
+            res.send({
+              success: false,
+              message: 'Error logging in'
+            });
+          }
+          else if(toString(decoded.data).trim() === user.tokenData.trim()) {
+            res.send({
+              success: true,
+              message: 'User has privilege'
+            });
+          }
+        }
+      })
+    }
+  })
 })
 
 router.post('/increment', (req, res) => {
-  // Req needs token and username
-  if(true) {  // If logged in user has token
-    Point.findOneAndUpdate(
-      {_id: mongoose.Types.ObjectId(req.body._id)}, {$inc: {"points": 1}}, (err, point) => {
-        if(err) {
+  User.findById(req.body.id, function(err, user) {
+    if(err) { // Can't find user
+      res.send({
+        success: false,
+        message: 'Error searching for user: ' + err
+      });
+    }
+    else { // Check token
+      jwt.verify(req.body.token, 'purduecs', function(err, decoded) {
+        if(err) { // Error decoding
           res.send({
             success: false,
-            message: 'Failed to increment points'
+            message: 'Error decoding token: ' + err
           });
         }
         else {
-          res.send({
-            success: true,
-            message: 'Incremented points'
-          });
+          if(decoded.data.trim() !== user.tokenData.trim()) { // Tokens don't match
+            res.send({
+              success: false,
+              message: 'Error logging in'
+            });
+          }
+          else if(decoded.data.trim() === user.tokenData.trim()) {
+            Point.findOneAndUpdate(
+              {_id: mongoose.Types.ObjectId(req.body.pointId)}, {$inc: {"points": 1}}, (err, point) => {
+                if(err) {
+                  res.send({
+                    success: false,
+                    message: 'Failed to increment points: ' + err
+                  });
+                }
+                else {
+                  res.send({
+                    success: true,
+                    message: 'Incremented points'
+                  });
+                }
+            });
+          }
         }
-    });
-  }
+      })
+    }
+  })
 })
 
 router.post('/decrement', (req, res) => {
-  // Req needs token and username
-  if(true) {  // If logged in user has token
-    Point.findOneAndUpdate(
-      {_id: mongoose.Types.ObjectId(req.body._id)}, {$inc: {"points": -1}}, (err, point) => {
-        if(err) {
+  User.findById(req.body.id, function(err, user) {
+    if(err) { // Can't find user
+      res.send({
+        success: false,
+        message: 'Error searching for user: ' + err
+      });
+    }
+    else { // Check token
+      jwt.verify(req.body.token, 'purduecs', function(err, decoded) {
+        if(err) { // Error decoding
           res.send({
             success: false,
-            message: 'Failed to decrement points'
+            message: 'Error decoding token: ' + err
           });
         }
         else {
-          res.send({
-            success: true,
-            message: 'Decremented points'
-          });
+          if(decoded.data.trim() !== user.tokenData.trim()) { // Tokens don't match
+            res.send({
+              success: false,
+              message: 'Error logging in'
+            });
+          }
+          else if(decoded.data.trim() === user.tokenData.trim()) {
+            Point.findOneAndUpdate(
+              {_id: mongoose.Types.ObjectId(req.body.pointId)}, {$inc: {"points": -1}}, (err, point) => {
+                if(err) {
+                  res.send({
+                    success: false,
+                    message: 'Failed to decrement points: ' + err
+                  });
+                }
+                else {
+                  res.send({
+                    success: true,
+                    message: 'Decremented points'
+                  });
+                }
+            });
+          }
         }
-    });
-  }
+      })
+    }
+  })
 })
 
 module.exports = router;

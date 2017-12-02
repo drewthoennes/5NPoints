@@ -1,14 +1,11 @@
 var express = require('express'),
 	app = express(),
-	session = require('express-session'),
 	bodyParser = require('body-parser'),
 	morgan = require('morgan'),
 	cors = require('cors'),
 	http = require('http').Server(app)
 	path = require('path'),
-	mongoose = require('mongoose'),
-	MongoStore = require('connect-mongo')(session);
-	// cookieParser = require('cookie-parser');
+	mongoose = require('mongoose');
 
 var config = require('./config'),
 	port = process.env.PORT || config.port,
@@ -29,22 +26,6 @@ var api_route = require('./routes/api'),
 	logout_route = require('./routes/logout'),
 	admin_route = require('./routes/admin')
 
-//app.use(cookieParser());
-app.use(session({
-	secret: 'purduecs',
-	resave: true,
-	saveUninitialized: false,
-	store: new MongoStore({
-		url: database,
-		collection: 'sessions',
-		ttl: 3 * 60 * 60
-	}),
-	cookie: {
-		maxAge: 36000000,
-		secure: false,
-		httpOnly: false
-	}
-}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
@@ -54,6 +35,7 @@ app.use(cors({
 	methods: ['GET', 'PUT', 'POST', 'OPTIONS'],
 	allowedHeaders: ['Content-Type', '*']
 }));
+
 app.use('/', api_route);
 app.use('/', login_route);
 app.use('/', logout_route);

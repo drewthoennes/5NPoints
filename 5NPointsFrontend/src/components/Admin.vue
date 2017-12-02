@@ -40,7 +40,11 @@ export default {
   },
   methods: {
     checkPrivileges: function() {
-      this.$http.post(config.backend + '/admin', {}).then(res => {
+      this.$http.options.emulateJSON = true;
+      this.$http.post(config.backend + '/admin', {
+        token: this.$localStorage.get('token', ''),
+        id: this.$localStorage.get('id', '')
+      }, {credentials: true}).then(res => {
         if(!res.body.success) {
           alert(res.body.message);
           router.push({name: 'Login'});
@@ -48,14 +52,16 @@ export default {
       });
     },
     getUsers: function() {
-      this.$http.get(config.backend + '/api/points').then(res => { // Change localhost
+      this.$http.get(config.backend + '/api/points').then(res => {
         this.users = res.body;
       });
     },
-    incrementPoints: function(id) {
+    incrementPoints: function(pointId) {
       this.$http.post(config.backend + '/increment', {
-        _id: id
-      }).then(res => { // Change localhost
+        token: this.$localStorage.get('token', ''),
+        id: this.$localStorage.get('id', ''),
+        pointId: pointId
+      }).then(res => {
         if(!res.body.success) {
           alert(res.body.message);
         }
@@ -64,9 +70,11 @@ export default {
         }
       });
     },
-    decrememtPoints: function(id) {
+    decrememtPoints: function(pointId) {
       this.$http.post(config.backend + '/decrement', {
-        _id: id
+        token: this.$localStorage.get('token', ''),
+        id: this.$localStorage.get('id', ''),
+        pointId: pointId
       }).then(res => { // Change localhost
         if(!res.body.success) {
           alert(res.body.message);

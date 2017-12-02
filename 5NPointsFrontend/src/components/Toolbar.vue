@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     boldLink() {
-      console.log(this.$router.history.current.fullPath);
+      //console.log(this.$router.history.current.fullPath);
       if(this.$router.history.current.fullPath == "/rewards") {
         this.points = false;
       }

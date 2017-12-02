@@ -4,7 +4,8 @@ const mongoose = require('mongoose'),
 
 var UserSchema = new Schema({
   username: {type: String, required: true, unique: true},
-  password: {type: String, required: true}
+  password: {type: String, required: true},
+	tokenData: {type: String, default: 'undefined'}
 }, {collection: 'users'});
 
 UserSchema.methods.comparePassword = function(password, callback) {

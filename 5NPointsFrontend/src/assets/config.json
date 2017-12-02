@@ -1,3 +1,4 @@
 {
-  "backend": "https://fivenpointsbackend.herokuapp.com"
+  "remote_backend": "https://fivenpointsbackend.herokuapp.com",
+  "backend": "http://localhost:3000"
 }

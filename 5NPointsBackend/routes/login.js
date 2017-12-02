@@ -1,7 +1,6 @@
 const express = require('express'),
   User = require('../models/User'),
-  session = require('express-session')
-  //cookieSession = require('cookie-session');
+  randToken = require('rand-token');
 
 var router = express.Router();
 
@@ -29,20 +28,35 @@ router.post('/login', (req, res) => {
             });
           }
           else {
-            // Create session and token
-            req.session.token = 'THISISMYTOKEN';
-            req.session.save();
-            if(!req.session.token) {
+            // Create token
+            if(!true) { // Token somehow failed..
               res.send({
                 success: false,
                 message: 'Error logging in the user'
               })
             }
             else {
-              res.send({
-                success: true,
-                message: 'User logged in'
-              });
+              var tokenData = randToken.generate(16);
+              var token = jwt.sign({
+                exp: Math.floor((Date.now() / 1000) + (60 * 60)),
+                data: tokenData
+              }, 'purduecs');
+              user.update({tokenData: tokenData}, function(err) {
+                if(err) {
+                  res.send({
+                    success: false,
+                    message: 'Error creating token',
+                  });
+                }
+                else {
+                  res.json({
+                    success: true,
+                    message: 'User logged in',
+                    id: user._id,
+                    token: token
+                  });
+                }
+              })
             }
           }
         })

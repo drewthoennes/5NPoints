@@ -43,6 +43,8 @@ export default {
       }, {credentials: true}).then(res => {
         if(res.body.success === true) {
           alert(res.body.message);
+          this.$localStorage.set('token', res.body.token);
+          this.$localStorage.set('id', res.body.id);
           router.push({name: 'Admin'});
         }
         else {
@@ -50,6 +52,9 @@ export default {
         }
       });
     }
+  },
+  mounted() {
+
   }
 }
 </script>

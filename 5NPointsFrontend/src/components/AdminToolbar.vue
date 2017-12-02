@@ -1,15 +1,12 @@
 <template>
   <div class="toolbar">
     <a v-on:click="logOut">Log Out</a>
-    <!-- <ul>
-      <li>Points</li>
-      <li>Rewards</li>
-    </ul> -->
   </div>
 </template>
 
 <script>
 import router from '@/router'
+import config from '@/assets/config'
 
 export default {
   name: 'Toolbar',
@@ -21,6 +18,21 @@ export default {
     logOut: function() {
       alert('Logging out');
       // Destroy session
+      this.$http.post(config.backend + '/logout', {
+        id: this.$localStorage.get('id', ''),
+        token: this.$localStorage.get('token', '')
+      }).then(res => {
+        if(!res.body.success) {
+          alert(res.body.message);
+        }
+        else if(res.body.success) {
+          alert(res.body.message);
+          router.push({name: 'Points'});
+        }
+        else {
+          alert('Error logging out');
+        }
+      });
       router.push({name: 'Points'})
     }
   }
