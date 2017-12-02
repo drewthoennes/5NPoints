@@ -13,7 +13,7 @@
           </thead>
           <tbody>
             <tr v-for="user in users">
-              <td>{{user.name}}</td>
+              <td>{{user.firstname}} {{user.lastname}}</td>
               <td><p v-on:click="decrememtPoints(user._id)">-</p><p> {{user.points}} </p><p v-on:click="incrementPoints(user._id)">+</p></td>
             </tr>
           </tbody>

@@ -13,7 +13,7 @@
           </thead>
           <tbody>
             <tr v-for="user in users">
-              <td>{{user.name}}</td>
+              <td>{{user.firstname}} {{user.lastname}}</td>
               <td>{{user.points}}</td>
             </tr>
           </tbody>
