@@ -42,7 +42,6 @@ export default {
         password: this.$refs.password.value
       }, {credentials: true}).then(res => {
         if(res.body.success === true) {
-          alert(res.body.message);
           this.$localStorage.set('token', res.body.token);
           this.$localStorage.set('id', res.body.id);
           router.push({name: 'Admin'});
@@ -95,7 +94,7 @@ input {
 }
 #LoginFormBody {
   height: 80%;
-  padding: 10px;
+  padding: 10px 20px 10px 20px;
   background-color: white;
   border-radius: 0px 0px 5px 5px;
   border-width: 0px 1px 1px 1px;
@@ -107,13 +106,11 @@ input {
 }
 #LoginFormBody input {
   /* Input needs to be centered, width is incorrect */
-  width: 90%;
-  padding: 15px 5px 15px 5px;
-  margin: 20px;
+  padding: auto;
+  margin: 20px 0px 20px 0px;
   border-radius: 5px;
   box-sizing: border-box;
   border: 1px solid #dddddd;
-  outline-width: 0px;
 }
 #Submit {
   background-color: #50e09a; /* Color at the top of the bottom bar */

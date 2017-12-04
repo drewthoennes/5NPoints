@@ -1,9 +1,11 @@
 <template>
   <div class="toolbar">
-    <router-link v-if="points" to="/points"><b>Points</b></router-link>
+    <router-link v-if="path == 'points'" to="/points"><b>Points</b></router-link>
     <router-link v-else to="/points">Points</router-link>
-    <router-link v-if="points" to="/rewards">Rewards</router-link>
-    <router-link v-else to="/rewards"><b>Rewards</b></router-link>
+    <router-link v-if="path == 'earn'" to="/rewards"><b>Earn</b></router-link>
+    <router-link v-else to="/earn">Earn</router-link>
+    <router-link v-if="path == 'rewards'" to="/rewards"><b>Rewards</b></router-link>
+    <router-link v-else to="/rewards">Rewards</router-link>
 
     <router-link id="login" to="/login"><i class="fa fa-lock" aria-hidden="true"></i></router-link>
   </div>
@@ -16,17 +18,20 @@ export default {
   name: 'Toolbar',
   data () {
     return {
-      points: null
+      path: null
     }
   },
   methods: {
     boldLink() {
       //console.log(this.$router.history.current.fullPath);
       if(this.$router.history.current.fullPath == "/rewards") {
-        this.points = false;
+        this.path = 'rewards';
       }
-      else {
-        this.points = true;
+      else if(this.$router.history.current.fullPath == "/points") {
+        this.path = 'points';
+      }
+      else if(this.$router.history.current.fullPath == "/earn") {
+        this.path = "earn";
       }
     }
   },

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Points from '@/components/Points'
+import Earn from '@/components/Earn'
 import Rewards from '@/components/Rewards'
 import Login from '@/components/Login'
 import Admin from '@/components/Admin'
@@ -12,6 +13,16 @@ export default new Router({
   history: true,
   mode: 'history',
   routes: [
+    {
+      path: '/points',
+      name: 'Points',
+      component: Points
+    },
+    {
+      path: '/earn',
+      name: 'Earn',
+      component: Earn
+    },
     {
       path: '/rewards',
       name: 'Rewards',
@@ -29,8 +40,7 @@ export default new Router({
     },
     {
       path: '*',
-      name: 'Points',
-      component: Points
+      redirect: '/points'
     }
   ]
 })

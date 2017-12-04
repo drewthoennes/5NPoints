@@ -1,6 +1,6 @@
 <template>
   <div class="toolbar">
-    <a v-on:click="logOut">Log Out</a>
+    <a v-on:click="logOut"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
   </div>
 </template>
 
@@ -16,7 +16,6 @@ export default {
   },
   methods: {
     logOut: function() {
-      alert('Logging out');
       // Destroy session
       this.$http.post(config.backend + '/logout', {
         id: this.$localStorage.get('id', ''),
@@ -26,7 +25,6 @@ export default {
           alert(res.body.message);
         }
         else if(res.body.success) {
-          alert(res.body.message);
           router.push({name: 'Points'});
         }
         else {
