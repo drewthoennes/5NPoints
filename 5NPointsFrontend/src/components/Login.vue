@@ -42,8 +42,9 @@ export default {
         password: this.$refs.password.value
       }, {credentials: true}).then(res => {
         if(res.body.success === true) {
-          this.$localStorage.set('token', res.body.token);
-          this.$localStorage.set('id', res.body.id);
+          this.$cookie.set('token', res.body.token);
+          this.$cookie.set('id', res.body.id);
+          this.$cookie.set('expires', new Date().getTime() + (2 * 60 * 60));
           router.push({name: 'Admin'});
         }
         else {
@@ -53,7 +54,6 @@ export default {
     }
   },
   mounted() {
-
   }
 }
 </script>

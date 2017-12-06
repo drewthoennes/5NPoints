@@ -24,13 +24,13 @@ export default {
   methods: {
     boldLink() {
       //console.log(this.$router.history.current.fullPath);
-      if(this.$router.history.current.fullPath == "/rewards") {
+      if(this.$router.history.current.fullPath == "/rewards" || this.$router.history.current.fullPath == "/rewards/") {
         this.path = 'rewards';
       }
-      else if(this.$router.history.current.fullPath == "/points") {
+      else if(this.$router.history.current.fullPath == "/points" || this.$router.history.current.fullPath == "/points/") {
         this.path = 'points';
       }
-      else if(this.$router.history.current.fullPath == "/earn") {
+      else if(this.$router.history.current.fullPath == "/earn" || this.$router.history.current.fullPath == "/earn/") {
         this.path = "earn";
       }
     }

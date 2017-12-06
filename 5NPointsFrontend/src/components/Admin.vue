@@ -13,7 +13,7 @@
           </thead>
           <tbody>
             <tr v-for="user in users">
-              <td>{{user.firstname}} {{user.lastname}}</td>
+              <td>{{user.firstname}} {{user.lastname}}</i></td><!--<i class="fa fa-pencil" aria-hidden="true"></i>-->
               <td><p v-on:click="decrememtPoints(user._id)">-</p><p> {{user.points}} </p><p v-on:click="incrementPoints(user._id)">+</p></td>
             </tr>
           </tbody>
@@ -25,8 +25,8 @@
 
 <script>
 import router from '@/router'
-import AdminToolbar from '@/components/AdminToolbar'
 import config from '@/assets/config'
+import AdminToolbar from '@/components/AdminToolbar'
 
 export default {
   name: 'Admin',
@@ -39,11 +39,16 @@ export default {
     }
   },
   methods: {
+    checkToken: function() {
+      if(this.$cookie.get('token') === null || this.$cokie.get('token') === '') {
+        this.$router.push({name: 'Login'});
+      }
+    },
     checkPrivileges: function() {
       this.$http.options.emulateJSON = true;
       this.$http.post(config.backend + '/admin', {
-        token: this.$localStorage.get('token', ''),
-        id: this.$localStorage.get('id', '')
+        token: this.$cookie.get('token'),
+        id: this.$cookie.get('id')
       }, {credentials: true}).then(res => {
         if(!res.body.success) {
           alert(res.body.message);
@@ -58,12 +63,13 @@ export default {
     },
     incrementPoints: function(pointId) {
       this.$http.post(config.backend + '/increment', {
-        token: this.$localStorage.get('token', ''),
-        id: this.$localStorage.get('id', ''),
+        token: this.$cookie.get('token'),
+        id: this.$cookie.get('id'),
         pointId: pointId
       }).then(res => {
         if(!res.body.success) {
           alert(res.body.message);
+          this.$router.push({name: 'Login'});
         }
         else {
           this.getUsers();
@@ -72,12 +78,13 @@ export default {
     },
     decrememtPoints: function(pointId) {
       this.$http.post(config.backend + '/decrement', {
-        token: this.$localStorage.get('token', ''),
-        id: this.$localStorage.get('id', ''),
+        token: this.$cookie.get('token'),
+        id: this.$cookie.get('id'),
         pointId: pointId
-      }).then(res => { // Change localhost
+      }).then(res => {
         if(!res.body.success) {
           alert(res.body.message);
+          this.$router.push({name: 'Login'});
         }
         else {
           this.getUsers();
@@ -85,7 +92,14 @@ export default {
       });
     }
   },
+  created() {
+    alert('Created');
+    console.log(this.$cookie);
+    console.log(this.$router);
+    this.checkToken();
+  },
   mounted() {
+    alert('Mounted');
     this.checkPrivileges();
     this.getUsers();
   }

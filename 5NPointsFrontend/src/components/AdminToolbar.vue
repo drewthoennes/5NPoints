@@ -18,8 +18,10 @@ export default {
     logOut: function() {
       // Destroy session
       this.$http.post(config.backend + '/logout', {
-        id: this.$localStorage.get('id', ''),
-        token: this.$localStorage.get('token', '')
+        //id: this.$localStorage.get('id', ''),
+        //token: this.$localStorage.get('token', '')
+        id: this.$cookie.get('id'),
+        token: this.$cookie.get('token')
       }).then(res => {
         if(!res.body.success) {
           alert(res.body.message);
