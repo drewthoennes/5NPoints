@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     checkToken: function() {
-      if(this.$cookie.get('token') === null || this.$cokie.get('token') === '') {
+      if(this.$cookie.get('token') === '') {
         this.$router.push({name: 'Login'});
       }
     },
@@ -92,14 +92,8 @@ export default {
       });
     }
   },
-  created() {
-    alert('Created');
-    console.log(this.$cookie);
-    console.log(this.$router);
-    this.checkToken();
-  },
   mounted() {
-    alert('Mounted');
+    this.checkToken();
     this.checkPrivileges();
     this.getUsers();
   }
