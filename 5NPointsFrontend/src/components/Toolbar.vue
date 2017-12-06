@@ -1,13 +1,16 @@
 <template>
   <div class="toolbar">
-    <router-link v-if="path == 'points'" to="/points"><b>Points</b></router-link>
-    <router-link v-else to="/points">Points</router-link>
-    <router-link v-if="path == 'earn'" to="/rewards"><b>Earn</b></router-link>
-    <router-link v-else to="/earn">Earn</router-link>
-    <router-link v-if="path == 'rewards'" to="/rewards"><b>Rewards</b></router-link>
-    <router-link v-else to="/rewards">Rewards</router-link>
-
-    <router-link id="login" to="/login"><i class="fa fa-lock" aria-hidden="true"></i></router-link>
+    <div class="toolbar-left">
+      <router-link v-if="path == 'points'" to="/points"><b>Points</b></router-link>
+      <router-link v-else to="/points">Points</router-link>
+      <router-link v-if="path == 'earn'" to="/rewards"><b>Earn</b></router-link>
+      <router-link v-else to="/earn">Earn</router-link>
+      <router-link v-if="path == 'rewards'" to="/rewards"><b>Rewards</b></router-link>
+      <router-link v-else to="/rewards">Rewards</router-link>
+    </div>
+    <div class="toolbar-right">
+      <router-link id="login" to="/login"><i class="fa fa-lock" aria-hidden="true"></i></router-link>
+    </div>
   </div>
 </template>
 
@@ -47,9 +50,20 @@ h1, h2 {
   font-weight: normal;
 }
 .toolbar {
-  margin: 0px;
+  width: 100%;
+  margin: auto;
   padding: 15px;
   background-color: #50e09a;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.toolbar-left {
+  justify-content: flex-start;
+  width: 100%;
+}
+.toolbar-right {
+  justify-content: flex-end;
 }
 .toolbar a {
   font-size: 20px;
@@ -57,9 +71,9 @@ h1, h2 {
   float: left;
   color: white;
 }
-#login {
+/*#login {
   float: right;
-}
+}*/
 /*.toolbar a:hover {
   font-weight: bold;
 }*/

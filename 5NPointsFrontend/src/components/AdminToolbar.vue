@@ -1,6 +1,8 @@
 <template>
   <div class="toolbar">
-    <a v-on:click="logOut"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+    <div class="toolbar-right">
+      <a v-on:click="logOut"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+    </div>
   </div>
 </template>
 
@@ -48,6 +50,9 @@ h1, h2 {
   margin: 0px;
   padding: 15px;
   background-color: #50e09a;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 ul {
   list-style-type: none;
