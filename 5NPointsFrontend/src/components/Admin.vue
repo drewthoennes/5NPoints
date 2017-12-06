@@ -13,7 +13,7 @@
           </thead>
           <tbody>
             <tr v-for="user in users">
-              <td>{{user.firstname}} {{user.lastname}}</i></td><!--<i class="fa fa-pencil" aria-hidden="true"></i>-->
+              <td>{{user.firstname}} {{user.lastname}}</td>
               <td><p v-on:click="decrememtPoints(user._id)">-</p><p> {{user.points}} </p><p v-on:click="incrementPoints(user._id)">+</p></td>
             </tr>
           </tbody>
@@ -35,6 +35,7 @@ export default {
   },
   data () {
     return {
+      passedTokenCheck: false,
       users: []
     }
   },
@@ -92,10 +93,20 @@ export default {
       });
     }
   },
+  created() {
+    //this.passedTokenCheck = false;
+    if(!this.$cookie.get('token')) {
+      this.$router.push({name: 'Login'});
+    }
+    else {
+      this.passedTokenCheck = true;
+    }
+  },
   mounted() {
-    this.checkToken();
-    this.checkPrivileges();
-    this.getUsers();
+    if(this.passedTokenCheck) {
+      this.checkPrivileges();
+      this.getUsers();
+    }
   }
 }
 </script>
