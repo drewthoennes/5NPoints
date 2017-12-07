@@ -18,30 +18,25 @@ export default {
   },
   methods: {
     logOut: function() {
-      // Destroy session
-      this.$http.post(config.backend + '/logout', {
-        //id: this.$localStorage.get('id', ''),
-        //token: this.$localStorage.get('token', '')
-        id: this.$cookie.get('id'),
-        token: this.$cookie.get('token')
-      }).then(res => {
-        if(!res.body.success) {
-          alert(res.body.message);
-        }
-        else if(res.body.success) {
+      if(!this.$cookie.get('token') || !this.$cookie.get('id')) {
+        router.push({name: 'Points'});
+      }
+      else {
+        this.$http.post(config.backend + '/logout', {
+          token: this.$cookie.get('token'),
+          id: this.$cookie.get('id')
+        }).then(res => {
+          this.$cookie.delete('token');
+          this.$cookie.delete('id');
+          this.$cookie.delete('expires');
           router.push({name: 'Points'});
-        }
-        else {
-          alert('Error logging out');
-        }
-      });
-      router.push({name: 'Points'})
+        });
+      }
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1, h2 {
   font-weight: normal;
@@ -68,7 +63,4 @@ li {
   float: right;
   color: white;
 }
-/*.toolbar a:hover {
-  font-weight: bold;
-}*/
 </style>

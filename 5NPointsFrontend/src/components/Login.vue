@@ -62,7 +62,6 @@ export default {
 h1, h2 {
   font-weight: normal;
   margin: 0px;
-  /*padding: 20px;*/
 }
 .login {
   padding-top: 50px;
@@ -73,14 +72,13 @@ input {
 }
 #LoginForm {
   height: 100%;
-  width: 35%; /* Controls the width of the Login */
+  width: 35%;
   margin: auto;
   border-radius: 0px 0px 5px 5px;
 }
 #LoginFormHeader {
   height: 20%;
   padding: 10px;
-  /*background-color: white;*/
   background-color: #fcfcfc;
   border-radius: 5px 5px 0px 0px;
   border-width: 1px;
@@ -105,7 +103,6 @@ input {
   padding: 0px 20px 0px 20px;
 }
 #LoginFormBody input {
-  /* Input needs to be centered, width is incorrect */
   padding: auto;
   margin: 20px 0px 20px 0px;
   border-radius: 5px;
@@ -113,7 +110,7 @@ input {
   border: 1px solid #dddddd;
 }
 #Submit {
-  background-color: #50e09a; /* Color at the top of the bottom bar */
+  background-color: #50e09a;
   color: white;
 }
 #Submit:active {
