@@ -1,7 +1,7 @@
 <template>
   <div class="admin h-100">
     <div class="col h-100">
-      <AdminToolbar class="row w-100"/>
+      <Toolbar class="row w-100"/>
       <div class="body">
         <h1>Points</h1>
         <table class="table table-bordered">
@@ -26,12 +26,12 @@
 <script>
 import router from '@/router'
 import config from '@/assets/config'
-import AdminToolbar from '@/components/AdminToolbar'
+import Toolbar from '@/components/Toolbar'
 
 export default {
   name: 'Admin',
   components: {
-    AdminToolbar
+    Toolbar
   },
   data () {
     return {
@@ -94,7 +94,6 @@ export default {
     }
   },
   created() {
-    //this.passedTokenCheck = false;
     if(!this.$cookie.get('token')) {
       this.$router.push({name: 'Login'});
     }
@@ -103,6 +102,7 @@ export default {
     }
   },
   mounted() {
+    this.$router.push({name: 'Login'});
     if(this.passedTokenCheck) {
       this.checkPrivileges();
       this.getUsers();

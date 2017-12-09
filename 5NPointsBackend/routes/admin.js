@@ -23,13 +23,13 @@ router.post('/admin', (req, res) => {
           });
         }
         else {
-          if(decoded.data.trim() !== user.tokenData.trim()) { // Tokens don't match
+          if(toString(decoded.data) !== toString(user.tokenData)) { // Tokens don't match
             res.send({
               success: false,
               message: 'Error logging in'
             });
           }
-          else if(toString(decoded.data).trim() === user.tokenData.trim()) {
+          else if(toString(decoded.data) === toString(user.tokenData)) {
             res.send({
               success: true,
               message: 'User has privilege'

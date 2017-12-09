@@ -34,11 +34,6 @@ export default new Router({
       component: Login
     },
     {
-      path: '/admin',
-      name: 'Admin',
-      component: Admin
-    },
-    {
       path: '*',
       redirect: '/points'
     }

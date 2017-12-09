@@ -24,6 +24,7 @@
 import router from '@/router';
 import config from '@/assets/config';
 import Toolbar from '@/components/Toolbar'
+import store from '@/store'
 
 export default {
   name: 'Login',
@@ -45,7 +46,8 @@ export default {
           this.$cookie.set('token', res.body.token);
           this.$cookie.set('id', res.body.id);
           this.$cookie.set('expires', new Date().getTime() + (2 * 60 * 60));
-          router.push({name: 'Admin'});
+          this.$store.state.admin = true;
+          router.push({name: 'Points'}); // Push to last page
         }
         else {
           alert('Error: ' + res.body.message);

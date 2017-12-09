@@ -46,6 +46,11 @@ export default {
   },
   created() {
     this.getEarn();
+  },
+  mounted() {
+    if(this.$store.state.admin == null) {
+          this.$children[0].updateStore();
+    }
   }
 }
 </script>

@@ -14,7 +14,7 @@
           <tbody>
             <tr v-for="user in users">
               <td>{{user.firstname}} {{user.lastname}}</td>
-              <td>{{user.points}}</td>
+              <td><p v-if="$store.state.admin" @click="decrememtPoints(user._id)">-</p> {{user.points}} <p v-if="$store.state.admin" @click="incrementPoints(user._id)">+</p></td>
             </tr>
           </tbody>
         </table>
@@ -26,6 +26,7 @@
 <script>
 import Toolbar from '@/components/Toolbar'
 import config from '@/assets/config'
+import store from '@/store'
 
 export default {
   name: 'Points',
@@ -39,18 +40,56 @@ export default {
   },
   methods: {
     getUsers: function() {
-      this.$http.get(config.backend + '/api/points').then(res => { // Change localhost
+      this.$http.get(config.backend + '/api/points').then(res => {
         this.users = res.body;
+        for(var i = 0; i < this.users.length; i++) {
+          this.users[i].index = i;
+          this.users[i].editing = false;
+        }
+      });
+    },
+    incrementPoints: function(pointId) {
+      this.$http.post(config.backend + '/increment', {
+        token: this.$cookie.get('token'),
+        id: this.$cookie.get('id'),
+        pointId: pointId
+      }).then(res => {
+        if(!res.body.success) {
+          alert(res.body.message);
+          this.$router.push({name: 'Login'});
+        }
+        else {
+          this.getUsers();
+        }
+      });
+    },
+    decrememtPoints: function(pointId) {
+      this.$http.post(config.backend + '/decrement', {
+        token: this.$cookie.get('token'),
+        id: this.$cookie.get('id'),
+        pointId: pointId
+      }).then(res => {
+        if(!res.body.success) {
+          alert(res.body.message);
+          this.$router.push({name: 'Login'});
+        }
+        else {
+          this.getUsers();
+        }
       });
     }
   },
   created() {
     this.getUsers();
+  },
+  mounted() {
+    if(this.$store.state.admin == null) {
+          this.$children[0].updateStore();
+    }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1, h2 {
   font-weight: normal;
@@ -61,5 +100,8 @@ h1, h2 {
 }
 th {
   text-align: center;
+}
+td p {
+  display: inline;
 }
 </style>
