@@ -10,21 +10,15 @@ function authorize(req, callback) {
     if(err) { // Can't find user
       return callback("Error searching for user: " + err);
     }
-    else { // Check token
-      jwt.verify(req.body.token, 'purduecs', function(err, decoded) {
-        if(err) { // Error decoding
-          return callback("Error decoding token: " + err);
-        }
-        else {
-          if(decoded.data.trim() !== user.tokenData.trim()) { // Tokens don't match
-            return callback("Error logging in");
-          }
-          else if(decoded.data.trim() === user.tokenData.trim()) {
-            return callback(null, true);
-          }
-        }
-      })
-    }
+    jwt.verify(req.body.token, 'purduecs', function(err, decoded) {
+      if(err) { // Error decoding
+        return callback("Error decoding token: " + err);
+      }
+      if(decoded.data.trim() === user.tokenData.trim()) {
+        return callback(null, true);
+      }
+      return callback("Error logging in");
+    })
   })
 }
 

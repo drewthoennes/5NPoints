@@ -17,7 +17,7 @@
                 <div @click="editing(user)" class="view">
                   {{user.firstname}} {{user.lastname}}
                 </div>
-                <div class="edit">
+                <div v-if="$store.state.admin" class="edit">
                   <input @keyup.esc="escape()" @keyup.enter="save(user._id, user.firstname, user.lastname)" type="text" v-model="user.firstname"/>
                   <input @keyup.esc="escape()" @keyup.enter="save(user._id, user.firstname, user.lastname)" type="text" v-model="user.lastname"/>
                 </div>
@@ -49,7 +49,9 @@ export default {
   },
   methods: {
     editing: function(user) {
-      this.userEditing = user;
+      if(this.$store.state.admin) {
+        this.userEditing = user;
+      }
     },
     escape: function() {
       this.userEditing = null;
