@@ -5,6 +5,29 @@ const express = require('express'),
   Point = require('../models/Point'),
   Reward = require('../models/Reward')
 
+function authorize(req, callback) {
+  User.findById(req.body.userId, function(err, user) {
+    if(err) { // Can't find user
+      return callback("Error searching for user: " + err);
+    }
+    else { // Check token
+      jwt.verify(req.body.token, 'purduecs', function(err, decoded) {
+        if(err) { // Error decoding
+          return callback("Error decoding token: " + err);
+        }
+        else {
+          if(decoded.data.trim() !== user.tokenData.trim()) { // Tokens don't match
+            return callback("Error logging in");
+          }
+          else if(decoded.data.trim() === user.tokenData.trim()) {
+            return callback(null, true);
+          }
+        }
+      })
+    }
+  })
+}
+
 var router = express.Router();
 
 router.get('/', (req, res) => {
@@ -33,6 +56,34 @@ router.get('/api/points', (req, res) => {
       res.json(points);
     }
   });
+})
+
+router.post('/api/points', (req, res) => {
+  if(authorize(req, function(err, data) {
+    if(err) {
+      res.send({
+        success: false,
+        message: err
+      });
+    }
+    else {
+      Point.findOneAndUpdate(
+        {_id: mongoose.Types.ObjectId(req.body.pointId)}, {$inc: {"points": req.body.value}}, (err, point) => {
+          if(err) {
+            res.send({
+              success: false,
+              message: 'Failed to change points: ' + err
+            });
+          }
+          else {
+            res.send({
+              success: true,
+              message: 'Changed points'
+            });
+          }
+      });
+    }
+  }));
 })
 
 router.get('/api/earn', (req, res) => {
@@ -89,5 +140,32 @@ router.get('/api/rewards', (req, res) => {
 //     }
 //   })
 // })
+
+router.post('/api/users', (req, res) => {
+  if(authorize(req, function(err, data) {
+    if(err) {
+      res.send({
+        success: false,
+        message: err
+      });
+    }
+    else {
+      Point.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.pointId)}, {$set: {firstname: req.body.firstname, lastname: req.body.lastname}}, (err, user) => {
+        if(err) {
+          res.send({
+            success: false,
+            message: 'Error searching for user: ' + err
+          });
+        }
+        else {
+          res.send({
+            success: true,
+            message: 'Updated user'
+          })
+        }
+      })
+    }
+  }));
+})
 
 module.exports = router;

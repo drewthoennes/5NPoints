@@ -3,7 +3,8 @@ const mongoose = require('mongoose'),
 	Schema = mongoose.Schema
 
 var PointSchema = new Schema({
-  name: {type: String, required: true, unique: true},
+  firstname: {type: String, required: true},
+	lastname: {type: String, required: true},
   points: {type: Number, required: true}
 }, {collection: 'points'});
 
