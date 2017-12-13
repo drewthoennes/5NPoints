@@ -12,9 +12,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="reward in rewards">
-              <td>{{reward.points}}</td>
-              <td>{{reward.reward}}</td>
+            <tr v-for="reward in rewards" v-bind:class="{editing: reward == rewardEditing}" v-cloak>
+              <td><p v-if="$store.state.admin" @click="decrement(reward._id)">-</p> {{reward.points}} <p v-if="$store.state.admin" @click="increment(reward._id)">-</p></td>
+              <td>
+                <div @click="editing(reward)" class="view">
+                  {{reward.reward}}
+                </div>
+                <div v-if="$store.state.admin" class="edit">
+                  <input @keyup.esc="escape()" @keyup.enter="save(reward._id, reward.reward)" type="text" v-model="reward.reward"/>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -34,13 +41,68 @@ export default {
   },
   data () {
     return {
-      rewards: []
+      rewards: [],
+      rewardEditing: null
     }
   },
   methods: {
+    editing: function(reward) {
+      if(this.$store.state.admin) {
+        this.rewardEditing = reward;
+      }
+    },
+    escape: function() {
+      this.rewardEditing = null;
+      this.getRewards();
+    },
+    save: function(earnId, activity) {
+      this.$http.post(config.backend + '/api/reward', {
+        token: this.$cookie.get('token'),
+        userId: this.$cookie.get('id'),
+        rewardId: rewardId,
+        reward: reward
+      }).then(res => {
+        if(!res.body.success) {
+          alert(res.body.message);
+        }
+        this.escape();
+      })
+    },
     getRewards: function() {
       this.$http.get(config.backend + '/api/rewards').then(res => { // Change localhost
         this.rewards = res.body;
+      });
+    },
+    increment: function(rewardId) {
+      this.$http.post(config.backend + '/api/reward', {
+        token: this.$cookie.get('token'),
+        userId: this.$cookie.get('id'),
+        rewardId: rewardId,
+        value: 1
+      }).then(res => {
+        if(!res.body.success) {
+          alert(res.body.message);
+          this.$router.push({name: 'Login'});
+        }
+        else {
+          this.getEarn();
+        }
+      });
+    },
+    decrememt: function(rewardId) {
+      this.$http.post(config.backend + '/api/reward', {
+        token: this.$cookie.get('token'),
+        userId: this.$cookie.get('id'),
+        rewardId: rewardId,
+        value: -1
+      }).then(res => {
+        if(!res.body.success) {
+          alert(res.body.message);
+          this.$router.push({name: 'Login'});
+        }
+        else {
+          this.getRewards();
+        }
       });
     }
   },
@@ -55,8 +117,16 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.edit {
+  display: none
+}
+.editing .view {
+  display: none;
+}
+.editing .edit {
+  display: block;
+}
 h1, h2 {
   font-weight: normal;
 }
@@ -66,5 +136,8 @@ h1, h2 {
 }
 th {
   text-align: center;
+}
+td p {
+  display: inline;
 }
 </style>

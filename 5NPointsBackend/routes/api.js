@@ -61,21 +61,39 @@ router.post('/api/points', (req, res) => {
       });
     }
     else {
-      Point.findOneAndUpdate(
-        {_id: mongoose.Types.ObjectId(req.body.pointId)}, {$inc: {"points": req.body.value}}, (err, point) => {
+      if(req.body.value) {
+        Point.findOneAndUpdate(
+          {_id: mongoose.Types.ObjectId(req.body.pointId)}, {$inc: {"points": req.body.value}}, (err, point) => {
+            if(err) {
+              res.send({
+                success: false,
+                message: 'Failed to change points: ' + err
+              });
+            }
+            else {
+              res.send({
+                success: true,
+                message: 'Changed points'
+              });
+            }
+        });
+      }
+      else if(req.body.firstname && req.body.lastname) {
+        Point.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.pointId)}, {$set: {firstname: req.body.firstname, lastname: req.body.lastname}}, (err, user) => {
           if(err) {
             res.send({
               success: false,
-              message: 'Failed to change points: ' + err
+              message: 'Error searching for user: ' + err
             });
           }
           else {
             res.send({
               success: true,
-              message: 'Changed points'
-            });
+              message: 'Updated user'
+            })
           }
-      });
+        });
+      }
     }
   }));
 })
@@ -98,6 +116,52 @@ router.get('/api/earn', (req, res) => {
       res.json(earn);
     }
   });
+})
+
+router.post('/api/earn', (req, res) => {
+  if(authorize(req, function(err, data) {
+    if(err) {
+      res.send({
+        success: false,
+        message: err
+      });
+    }
+    else {
+      if(req.body.value) {
+        Earn.findOneAndUpdate(
+          {_id: mongoose.Types.ObjectId(req.body.earnId)}, {$inc: {"points": req.body.value}}, (err, earn) => {
+            if(err) {
+              res.send({
+                success: false,
+                message: 'Failed to change points: ' + err
+              });
+            }
+            else {
+              res.send({
+                success: true,
+                message: 'Changed points'
+              });
+            }
+        });
+      }
+      else if(req.body.activity) {
+        Earn.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.earnId)}, {$set: {activity: req.body.activity}}, (err, earn) => {
+          if(err) {
+            res.send({
+              success: false,
+              message: 'Error searching for earn: ' + err
+            });
+          }
+          else {
+            res.send({
+              success: true,
+              message: 'Updated earn'
+            })
+          }
+        });
+      }
+    }
+  }));
 })
 
 router.get('/api/rewards', (req, res) => {

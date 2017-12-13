@@ -109,7 +109,6 @@ export default {
     },
   },
   mounted() {
-    // If admin isn't set
     if(!this.$store.state.admin) {
       this.$store.state.admin = false;
     }

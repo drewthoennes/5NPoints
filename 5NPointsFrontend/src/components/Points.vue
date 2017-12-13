@@ -22,7 +22,7 @@
                   <input @keyup.esc="escape()" @keyup.enter="save(user._id, user.firstname, user.lastname)" type="text" v-model="user.lastname"/>
                 </div>
               </td>
-              <td><p v-if="$store.state.admin" @click="decrememt(user._id)">-</p> {{user.points}} <p v-if="$store.state.admin" @click="increment(user._id)">+</p></td>
+              <td><p v-if="$store.state.admin" @click="decrement(user._id)">-</p> {{user.points}} <p v-if="$store.state.admin" @click="increment(user._id)">+</p></td>
             </tr>
           </tbody>
         </table>
@@ -58,7 +58,7 @@ export default {
       this.getUsers();
     },
     save: function(pointId, firstname, lastname) {
-      this.$http.post(config.backend + '/api/users', {
+      this.$http.post(config.backend + '/api/points', {
         token: this.$cookie.get('token'),
         userId: this.$cookie.get('id'),
         pointId: pointId,
