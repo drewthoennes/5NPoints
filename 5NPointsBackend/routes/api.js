@@ -133,13 +133,13 @@ router.post('/api/earn', (req, res) => {
             if(err) {
               res.send({
                 success: false,
-                message: 'Failed to change points: ' + err
+                message: 'Failed to change earn: ' + err
               });
             }
             else {
               res.send({
                 success: true,
-                message: 'Changed points'
+                message: 'Changed earn'
               });
             }
         });
@@ -182,6 +182,52 @@ router.get('/api/rewards', (req, res) => {
       res.json(rewards);
     }
   });
+})
+
+router.post('/api/rewards', (req, res) => {
+  if(authorize(req, function(err, data) {
+    if(err) {
+      res.send({
+        success: false,
+        message: err
+      });
+    }
+    else {
+      if(req.body.value) {
+        Reward.findOneAndUpdate(
+          {_id: mongoose.Types.ObjectId(req.body.rewardId)}, {$inc: {"points": req.body.value}}, (err, earn) => {
+            if(err) {
+              res.send({
+                success: false,
+                message: 'Failed to change reward: ' + err
+              });
+            }
+            else {
+              res.send({
+                success: true,
+                message: 'Changed reward'
+              });
+            }
+        });
+      }
+      else if(req.body.reward) {
+        Reward.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.rewardId)}, {$set: {reward: req.body.reward}}, (err, earn) => {
+          if(err) {
+            res.send({
+              success: false,
+              message: 'Error searching for reward: ' + err
+            });
+          }
+          else {
+            res.send({
+              success: true,
+              message: 'Updated reward'
+            })
+          }
+        });
+      }
+    }
+  }));
 })
 
 // Use this for testing, but not for production

@@ -95,7 +95,7 @@ export default {
         }
       });
     },
-    decrememt: function(pointId) {
+    decrement: function(pointId) {
       this.$http.post(config.backend + '/api/points', {
         token: this.$cookie.get('token'),
         userId: this.$cookie.get('id'),

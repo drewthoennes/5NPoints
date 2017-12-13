@@ -13,7 +13,7 @@
           </thead>
           <tbody>
             <tr v-for="reward in rewards" v-bind:class="{editing: reward == rewardEditing}" v-cloak>
-              <td><p v-if="$store.state.admin" @click="decrement(reward._id)">-</p> {{reward.points}} <p v-if="$store.state.admin" @click="increment(reward._id)">-</p></td>
+              <td><p v-if="$store.state.admin" @click="decrement(reward._id)">-</p> {{reward.points}} <p v-if="$store.state.admin" @click="increment(reward._id)">+</p></td>
               <td>
                 <div @click="editing(reward)" class="view">
                   {{reward.reward}}
@@ -55,8 +55,8 @@ export default {
       this.rewardEditing = null;
       this.getRewards();
     },
-    save: function(earnId, activity) {
-      this.$http.post(config.backend + '/api/reward', {
+    save: function(rewardId, reward) {
+      this.$http.post(config.backend + '/api/rewards', {
         token: this.$cookie.get('token'),
         userId: this.$cookie.get('id'),
         rewardId: rewardId,
@@ -74,7 +74,7 @@ export default {
       });
     },
     increment: function(rewardId) {
-      this.$http.post(config.backend + '/api/reward', {
+      this.$http.post(config.backend + '/api/rewards', {
         token: this.$cookie.get('token'),
         userId: this.$cookie.get('id'),
         rewardId: rewardId,
@@ -85,12 +85,12 @@ export default {
           this.$router.push({name: 'Login'});
         }
         else {
-          this.getEarn();
+          this.getRewards();
         }
       });
     },
-    decrememt: function(rewardId) {
-      this.$http.post(config.backend + '/api/reward', {
+    decrement: function(rewardId) {
+      this.$http.post(config.backend + '/api/rewards', {
         token: this.$cookie.get('token'),
         userId: this.$cookie.get('id'),
         rewardId: rewardId,
