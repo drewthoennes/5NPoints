@@ -1,6 +1,8 @@
 # 5NPoints
 A simple system to track points, rewards, and ways to earn
 
+![Screenshot](screenshot.png) 
+
 ## Getting started
 
 1. Clone the repository:
