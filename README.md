@@ -1,7 +1,7 @@
-#5N Point
+# 5NPoints
 A simple system to track points, rewards, and ways to earn
 
-##Getting started
+## Getting started
 
 1. Clone the repository:
 
@@ -41,5 +41,5 @@ npm install
 node main.js
 ```
 
-##Contributing
+## Contributing
 If you find a bug or code an improvement, a ticket or a pull request would be greatly appreciated!
