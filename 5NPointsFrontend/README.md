@@ -2,6 +2,8 @@
 
 > Points for McCutcheon 5N
 
+![Screenshot](screenshot.png)
+
 ## Build Setup
 
 ``` bash
