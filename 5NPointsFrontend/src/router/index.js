@@ -4,7 +4,6 @@ import Points from '@/components/Points'
 import Earn from '@/components/Earn'
 import Rewards from '@/components/Rewards'
 import Login from '@/components/Login'
-import Admin from '@/components/Admin'
 
 Vue.use(Router)
 

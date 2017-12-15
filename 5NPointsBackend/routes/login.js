@@ -1,6 +1,7 @@
 const express = require('express'),
   User = require('../models/User'),
-  randToken = require('rand-token');
+  randToken = require('rand-token'),
+  config = require('../config');
 
 var router = express.Router();
 
@@ -40,7 +41,7 @@ router.post('/login', (req, res) => {
               var token = jwt.sign({
                 exp: Math.floor((Date.now() / 1000) + (60 * 60)),
                 data: tokenData
-              }, 'purduecs');
+              }, config.jwtKey);
               user.update({tokenData: tokenData}, function(err) {
                 if(err) {
                   res.send({

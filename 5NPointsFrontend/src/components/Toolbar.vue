@@ -103,7 +103,7 @@ export default {
           this.$cookie.delete('id');
           this.$cookie.delete('expires');
           router.push({name: 'Points'});
-          location.reload(); // Avoid doing this?
+          location.reload();
         });
       }
     },
@@ -115,9 +115,7 @@ export default {
     if(this.$cookie.get('token') && this.$cookie.get('id')) {
       this.checkPrivileges()
     }
-    if(!this.admin) {
-        this.boldLink();
-    }
+    this.boldLink();
   }
 }
 </script>

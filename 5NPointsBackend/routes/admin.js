@@ -2,7 +2,8 @@ const express = require('express'),
   User = require('../models/User'),
   Point = require('../models/Point')
   mongoose = require('mongoose'),
-  jwt = require('jsonwebtoken');
+  jwt = require('jsonwebtoken'),
+  config = require('../config');
 
 var router = express.Router();
 
@@ -15,7 +16,7 @@ router.post('/admin', (req, res) => {
       });
     }
     else { // Check token
-      jwt.verify(req.body.token, 'purduecs', function(err, decoded) {
+      jwt.verify(req.body.token, config.jwtKey, function(err, decoded) {
         if(err) { // Error decoding
           res.send({
             success: false,
