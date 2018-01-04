@@ -1,47 +1,46 @@
-# 5NPoints
+# 5N Points
 A simple system to track points, rewards, and ways to earn
 
-![Screenshot](screenshot.png) 
+![Screenshot](screenshot.png)
 
 ## Getting started
 
 1. Clone the repository:
 
 ```shell
-git clone --bare https://github.com/drewthoennes/5NPoints.git
+git clone https://github.com/drewthoennes/5NPoints.git
 ```
 
-2. Install dependencies for web app:
+2. Install dependencies for frontend:
 
-```shell
-cd 5NPointsFrontend
+``` bash
+cd Frontend
 npm install
 ```
 
-3. Build the application:
+3. Build and run the frontend:
 
-```shell
-npm run build
-```
-
-4. Run 5NPoints:
-
-```
+``` bash
+# run application locally for development
 npm run dev
+
+# build and run for production
+npm run build
+npm start
 ```
 
-5. Install dependencies for backend:
+4. Install dependencies for backend:
 
-```
-cd ../5NPointsBackend
+``` bash
+cd Backend
 npm install
 ```
 
-6. Start the server:
+5. Start the server:
 
-```
+``` bash
 node main.js
 ```
 
 ## Contributing
-If you find a bug or code an improvement, a ticket or a pull request would be greatly appreciated!
+If you find a bug, a ticket or a pull request would be greatly appreciated!

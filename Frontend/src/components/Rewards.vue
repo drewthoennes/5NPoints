@@ -69,7 +69,7 @@ export default {
       })
     },
     getRewards: function() {
-      this.$http.get(config.backend + '/api/rewards').then(res => { // Change localhost
+      this.$http.get(config.backend + '/api/rewards').then(res => {
         this.rewards = res.body;
       });
     },
