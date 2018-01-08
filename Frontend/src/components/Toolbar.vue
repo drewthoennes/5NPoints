@@ -55,7 +55,7 @@ export default {
         }
       });
     },
-    checkPrivileges: function() {
+    checkPrivileges: function(callback) {
       this.$http.options.emulateJSON = true;
       this.$http.post(config.backend + '/admin', {
         token: this.$cookie.get('token'),
@@ -69,13 +69,11 @@ export default {
           this.admin = false;
           this.$store.state.admin = false;
         }
+        callback();
       });
     },
     // User
     boldLink: function() {
-      if(!this.admin) {
-        return;
-      }
       if(this.$router.history.current.fullPath == "/rewards" || this.$router.history.current.fullPath == "/rewards/") {
         this.path = 'rewards';
       }
@@ -113,9 +111,14 @@ export default {
       this.$store.state.admin = false;
     }
     if(this.$cookie.get('token') && this.$cookie.get('id')) {
-      this.checkPrivileges()
+      var self = this;
+      this.checkPrivileges(function() {
+        self.boldLink();
+      })
     }
-    this.boldLink();
+    else {
+      this.boldLink();
+    }
   }
 }
 </script>
