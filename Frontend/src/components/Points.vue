@@ -7,8 +7,10 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Points</th>
+              <th v-if="!sortPoints"><u>Name</u></th>
+              <th v-else @click="sortPoints = false; users = unsorted;"><b>Name</b></th>
+              <th v-if="sortPoints"><u>Points</u></th>
+              <th v-else @click="sortPoints = true; users = sorted;"><b>Points</b></th>
             </tr>
           </thead>
           <tbody>
@@ -44,7 +46,10 @@ export default {
   data () {
     return {
       users: [],
-      userEditing: null
+      unsorted: [],
+      sorted: [],
+      userEditing: null,
+      sortPoints: false
     }
   },
   methods: {
@@ -73,10 +78,23 @@ export default {
     },
     getUsers: function() {
       this.$http.get(config.backend + '/api/points').then(res => {
-        this.users = res.body;
+        this.unsorted = res.body;
         for(var i = 0; i < this.users.length; i++) {
-          this.users[i].index = i;
+          this.unsorted[i].index = i;
         }
+        this.sorted = this.unsorted.slice();
+        this.sort(this.sorted);
+        if(!this.sortPoints) {
+          this.users = this.unsorted;
+        }
+        else {
+          this.users = this.sorted;
+        }
+      });
+    },
+    sort: function(users) {
+      users.sort(function(a, b) {
+        return a.points - b.points;
       });
     },
     increment: function(pointId) {
@@ -142,6 +160,9 @@ h1, h2 {
 }
 th {
   text-align: center;
+}
+th u, th b {
+  cursor: pointer;
 }
 td p {
   display: inline;

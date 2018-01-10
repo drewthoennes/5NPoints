@@ -8,9 +8,9 @@
           </div>
           <div id="LoginFormBody">
             <h1>Log in</h1>
-            <form v-on:submit="loginUser">
-              <input id="Username" ref="username" placeholder="Username" class="form-control" type="text">
-              <input id="Password" ref="password" placeholder="Password" class="form-control" type="password">
+            <form v-on:submit="loginUser" autocomplete="on">
+              <input id="Username" ref="username" name="username" placeholder="Username" class="form-control" type="text" autocomplete="username">
+              <input id="Password" ref="password" name="password" placeholder="Password" class="form-control" type="password" autocomplete="current-password">
               <input id="Submit" placeholder="Create account" class="form-control" type="submit">
             </form>
           </div>
